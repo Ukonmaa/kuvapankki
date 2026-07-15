@@ -1,0 +1,36 @@
+# Ukonmaan kuvapankki — jaettu kuva-/tavuvarasto (Atlas-arkkitehtuuri §5, Master §infrastruktuuri)
+#
+# Staattinen site: ei build-vaihetta, koko repo tarjoillaan sellaisenaan.
+# Jokainen viite on VERSIOITU AVAIN yhden base-URL:n alla, esim.
+#   <base>/maps/ukonmaa-paakartta/kanvaasi-v1.webp
+# → sisältö ei koskaan muutu saman URL:n alla (uusi versio = uusi avain = uusi URL),
+#   joten välimuisti voidaan asettaa immutableksi ja pitkäksi.
+
+[build]
+  publish = "."
+  command = ""
+
+# CORS: kaikki kuluttajat (Atlas, karttaeditori, ukonmaa-web, teospaketointi) saavat lukea.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+# Versioidut avaimet → pitkä immutable-välimuisti (1 v). Sisältö ei muutu URL:n alla.
+[[headers]]
+  for = "/maps/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/entities/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/site/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=31536000, immutable"
