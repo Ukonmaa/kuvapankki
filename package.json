@@ -1,0 +1,11 @@
+{
+  "name": "ukonmaa-kuvapankki",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "johdannaiset": "node tools/luo-johdannaiset.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
+  }
+}
