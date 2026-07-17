@@ -53,3 +53,13 @@ Atlaksen 8 karttatiedostoa (aiemmin vain paikallisella levyllä, gitignorattu):
 ## Siirtymäsignaalit R2:een (Atlas §5.1)
 
 Kuvapankki > ~1 Gt · Netlify-kaista (100 Gt/kk jaettu) lähestyy kattoa · peliassetit mukaan.
+
+## Johdannaiset
+
+Jokaisella kartalla on täyskuvan rinnalla pienet johdannaiset (generointi: `npm run johdannaiset`):
+
+- `maps/<id>/thumb-v1.webp` — 512 px, q70, ≤ 100 kt (kortit/listat)
+- `maps/<id>/esikatselu-v1.webp` — 2048 px, q78, ≤ 900 kt (herot, karttasivun ensipiirto, TARU-upotus)
+
+Versioidut avaimet ovat muuttumattomia: generointi ei koskaan ylikirjoita olemassa olevaa
+johdannaista. Uusi sisältö = uusi versionumero avaimeen (esim. `kanvaasi-v2.webp`).
