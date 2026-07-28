@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "johdannaiset": "node tools/luo-johdannaiset.mjs"
+    "johdannaiset": "node tools/luo-johdannaiset.mjs",
+    "entiteettikuvat": "node tools/luo-entiteettikuvat.mjs",
+    "test": "node --test"
   },
   "devDependencies": {
     "sharp": "^0.35.3"
