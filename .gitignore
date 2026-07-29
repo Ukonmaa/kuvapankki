@@ -2,3 +2,7 @@
 Thumbs.db
 .netlify/
 node_modules/
+
+# Entiteettikuvien lähteet (erillinen kuvatuotanto) — repoon tulevat vain
+# versioidut johdannaiset, jotka tools/luo-entiteettikuvat.mjs tuottaa.
+entities/_lahde/
