@@ -6,8 +6,8 @@
 
 | | |
 |---|---|
-| **Versio** | v0.1 (24.7.2026) |
-| **Status** | Kuvapankki tuotannossa · ääni/video-linjaus pohdintana (ei toteutuspäätöstä) |
+| **Versio** | v0.2 (29.7.2026) |
+| **Status** | Kuvapankki tuotannossa · `entities/`-putki valmis, 0 kuvaa julkaistu (J6) · ääni/video-linjaus pohdintana |
 | **Numerointi** | 1B = ytimen (1A-MYTHOLOGIA-FEINNE) rinnalla elävä läpileikkaava infrastruktuuri |
 | **Suhde muihin** | Tiivistää ja laajentaa: Atlas §5–5.2 (omistajuus, R2-polku, johdannaiset), Master §infrastruktuuri (v0.13), MF §3.9, `kuvapankki/README.md` |
 
@@ -60,7 +60,8 @@ maps/<karttaId>/kuva-v<n>.webp        staattisen kartan täyskuva / kansikuva
 maps/<karttaId>/thumb-v<n>.webp       johdannainen: 512 px, q70, ≤ 100 kt (kortit, listat)
 maps/<karttaId>/esikatselu-v<n>.webp  johdannainen: 2048 px, q78, ≤ 900 kt (herot, ensipiirto, TARU)
 maps/<karttaId>/tiles/…               (varaus: laatoitus, jos tarvitaan)
-entities/<slug>/<kuva>-v<n>.webp      MF-entiteettien kuvat (MF.kuvat viittaa tänne) — varaus
+entities/<id>/<rooli>-v<n>.webp       MF-entiteettien kuvat (MF.kuvat viittaa tänne) — ks. §2.5
+entities/<id>/<rooli>-thumb-v<n>.webp  johdannainen: 512 px, q75, ≤ 150 kt
 site/…                                sivustojen/UI:n omat assetit — varaus
 ```
 
@@ -92,15 +93,80 @@ Kuluttaja liittää base-URL:n **ajossa** — avaimet datassa ovat varastoneutra
 - **TARU-upotus** (`?embed=taru`): `KUVAPANKKI_BASE` vaihtuu paikalliseksi (`.`) —
   teokseen vendoroidaan vain johdannaiset ja käytössä oleva kanvaasiversio
   (`taru-app/scripts/vendor-views.mjs` suodattaa) → **0 ulkoista hakua** upotettuna.
-- **Varaukset:** MF-entiteettikuvat (`entities/`), ukonmaa-web (`site/`).
+- **Bestiaari** (`bestiary-app/index.html`) ja **Ensyklopedia** (`encyclopedia-home.html`):
+  oma toisinto samasta `KUVAPANKKI_BASE` + `kuvaUrl(avain)` -parista (J6, 29.7.2026).
+  Kolme toisintoa on **tietoinen valinta**, ei velka: siirtymämalli on "base-URL:n vaihto
+  per sovellus" (ks. luku 4), joten R2-siirto on kolme yhden rivin muutosta. Jaettua
+  moduulia ei tehty, koska cross-repo-suhteellinen polku on tässä projektissa jo kerran
+  osoittautunut ansaksi (`vakikeha.js`).
+- **Varaus:** ukonmaa-web (`site/`).
 
 Karttojen koordinaatti-JSON pysyy gitissä (diff/historia siellä missä se tuottaa
 arvoa) ja viittaa kanvaasiin avaimella — versiointi ei katoa, se elää avaintasolla.
 
-### 2.5 Nykytila lukuina (24.7.2026)
+### 2.5 `entities/` — nimiavaruus ja kuvatuotannon toimitussopimus (J6, 29.7.2026)
 
-8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` ja `site/` tyhjiä
-varauksia. Netlifyn ilmaiskaista 100 Gt/kk on jaettu ytimen julkaisun ja tulevan
+Nimiavaruus on **käytössä**: putki on rakennettu ja todennettu päästä päähän, mutta
+**yhtään kuvaa ei ole julkaistu** — kuvatuotanto tehdään erillisenä projektina, eikä
+tähän julkaisuun tule kuvia lainkaan (käyttäjän linjaus 29.7.2026).
+
+**Avain:** `entities/<entiteetin-id>/<rooli>-v<n>.webp`, ja rinnalle `<rooli>-thumb-v<n>.webp`.
+Muodon valvoo ytimen skeema (1A §3.9), joten väärä avain kaataa buildin.
+
+**Työkalu:** `npm run entiteettikuvat` → `tools/luo-entiteettikuvat.mjs` (karttojen
+`luo-johdannaiset.mjs`:n sisar). Sama muuttumattomuussääntö: olemassa olevaa versioitua
+avainta **ei koskaan ylikirjoiteta**. Viallinen lähde ei keskeytä erää vaan raportoidaan
+nimeltä ja työkalu jatkaa; kelvoton id tai rooli hylätään ennen kirjoitusta; tuntematon
+tiedostopääte raportoidaan eikä vaieta. Kokorajan ylitys → `exit 1` vasta erän lopuksi,
+ei kesken.
+
+#### Toimitussopimus — mitä kuvatuotanto toimittaa
+
+- **Yksi alpha-lähde per entiteetti:** PNG tai WebP, läpinäkyvä tausta, olento rajaamatta.
+- Resoluutio **vähintään 1200 px** pisimmältä sivulta, mieluiten enemmän — työkalu
+  pienentää, ei suurenna.
+- Tiedostonimi `<rooli>.png`, missä rooli on toistaiseksi aina `paakuva`.
+- Kansio **täsmälleen ytimen id:llä** (`menninkainen`, ei `Menninkäinen`). Pienet
+  kirjaimet ja väliviivat, ei ääkkösiä eikä alaviivoja; työkalu hylkää muun.
+- Lähteet menevät `entities/_lahde/`-puuhun, joka on **gitignoroitu** — repoon tulevat
+  vain versioidut johdannaiset.
+
+**Mitä ei tarvitse tehdä:** webp-muunnos, koot, versionumerot, kokorajat ja optimointi
+hoituvat työkalulla.
+
+**Mitä pitää tietää:**
+
+- **Versioitu avain on ikuinen.** Kun `paakuva-v1.webp` on julkaistu, sen sisältö ei enää
+  muutu. Korjattu kuva on `paakuva-v2.webp` ja vaatii viitteen päivityksen ytimessä.
+- **Sommittelu:** kaikki nykyiset kuvapaikat rajaavat `object-fit: cover` -periaatteella
+  **eri kuvasuhteilla** (Bestiaarin kortti 4:3, olentosivu 3:4, kodeksirivi 130×88 px,
+  Ensyklopedian muotokuva pystysuunnassa). Sommittele niin, että olennon tunnistettava osa
+  kestää sekä vaaka- että pystyrajauksen. **Avoin kohta:** alpha-taiteelle `contain` olisi
+  todennäköisesti oikeampi kuin `cover`, mutta sitä ei voi arvioida ilman oikeaa taidetta —
+  ratkaistaan kun ensimmäinen erä on nähtävissä.
+- **Alt-teksti** kirjoitetaan kuvan valmistuttua ja kuvaa **kuvaa**, ei entiteettiä.
+
+#### Mitat ja mittaustulokset
+
+| Johdannainen | Pisin sivu | Laatu | Kokoraja |
+|---|---|---|---|
+| `<rooli>-v<n>.webp` | 1200 px | 80 | 500 kt |
+| `<rooli>-thumb-v<n>.webp` | 512 px | 75 | 150 kt |
+
+Rajat ovat **virherajoja** ("tämä on selvästi väärin"), eivät optimointitavoitteita.
+Mitattu 29.7.2026 kahdella oikealla alpha-lähteellä (1024×1024, olentokortit): pääkuva
+230 kt ja 335 kt, thumb 90 kt ja 112 kt. Alkuperäiset arvatut rajat (300/120) hylkäsivät
+toisen näytteen heti — alpha-webp pakkautuu huonommin kuin opaakki.
+
+**Mittauksen sivulöydös, joka kannattaa muistaa: pienentäminen kasvatti tiedostoa**
+(1024 → 1000 px nosti 230 → 273 kt ja 335 → 360 kt). Uudelleennäytteistys pehmentää
+reunat, jotka pakkautuvat alphan kanssa huonommin kuin terävä alkuperäinen. Älä siis
+yritä säästää tavuja pienentämällä.
+
+### 2.6 Nykytila lukuina (24.7.2026, entities-rivi 29.7.2026)
+
+8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **putki valmis, 0 kuvaa**;
+`site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu ytimen julkaisun ja tulevan
 webin kanssa — nykyvolyymilla kaukana katosta.
 
 ---
@@ -239,4 +305,5 @@ lore-hierarkian osalta ensisijainen on Master.
 
 | Versio | Pvm | Muutos |
 |---|---|---|
+| v0.2 | 29.7.2026 | **J6 — entiteettikuvien putki.** `entities/`-nimiavaruus otettu käyttöön: uusi §2.5 (avainmalli, työkalu `luo-entiteettikuvat.mjs`, kuvatuotannon toimitussopimus, mitatut kokorajat 500/150 kt). §2.4 sai Bestiaarin ja Ensyklopedian kuluttajiksi ja perustelun kolmelle resolveritoisinnolle. Huom: **putki on valmis, kuvia ei ole julkaistu yhtään** — kuvatuotanto on erillinen projekti. |
 | v0.1 | 24.7.2026 | Ensimmäinen versio: kuvapankin nykytila dokumentoitu (varasto, avainmalli, johdannaiset, kuluttajat, luvut), mediavaraston invariantit eriytetty (§3), ääni/video-tulevaisuuslinjaus polkuineen A/B + striimausraja + päätössäännöt (§5). |
