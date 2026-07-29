@@ -95,8 +95,14 @@ Kuluttaja liittää base-URL:n **ajossa** — avaimet datassa ovat varastoneutra
   (`taru-app/scripts/vendor-views.mjs` suodattaa) → **0 ulkoista hakua** upotettuna.
 - **Bestiaari** (`bestiary-app/index.html`) ja **Ensyklopedia** (`encyclopedia-home.html`):
   oma toisinto samasta `KUVAPANKKI_BASE` + `kuvaUrl(avain)` -parista (J6, 29.7.2026).
-  Kolme toisintoa on **tietoinen valinta**, ei velka: siirtymämalli on "base-URL:n vaihto
-  per sovellus" (ks. luku 4), joten R2-siirto on kolme yhden rivin muutosta. Jaettua
+- **Kronikka** (`chronicle-app/js/chronicle-data.js`) ja **Maailma**
+  (`world-app/js/world-data.js`): sama toisinto (J6-jälkihoito, 29.7.2026). Kumpikaan ei
+  vielä renderöi entiteettikuvaa, mutta molemmilla oli `mediaUrl: ""`, joka olisi
+  resolvoinut kuvapankin avaimen suhteelliseksi poluksi heti ensimmäisellä kuvalla.
+  Sama moduuli tarjoaa myös `paakuvaUrl(entiteetti)`-poiminnan (Bestiaarin kaava) ja
+  `TARU_EMBED`-lipun, jonka näkymän taru-silta tuo — upotustilaa ei johdeta kahdesti.
+- Viisi toisintoa on **tietoinen valinta**, ei velka: siirtymämalli on "base-URL:n vaihto
+  per sovellus" (ks. luku 4), joten R2-siirto on viisi yhden rivin muutosta. Jaettua
   moduulia ei tehty, koska cross-repo-suhteellinen polku on tässä projektissa jo kerran
   osoittautunut ansaksi (`vakikeha.js`).
 - **Varaus:** ukonmaa-web (`site/`).
