@@ -14,10 +14,29 @@ import { fileURLToPath } from 'node:url';
 import { join, extname, basename } from 'node:path';
 import sharp from 'sharp';
 
-/** Mitat johdettu näkymien säiliöistä 2x-näytöillä; säädä tästä yhdestä paikasta. */
+/**
+ * Mitat johdettu näkymien säiliöistä 2x-näytöillä; säädä tästä yhdestä paikasta.
+ *
+ * `sivu` on KATTO, ei tavoite: `withoutEnlargement` estää suurentamisen, joten
+ * lähdettä pienempi arvo ei tee mitään.
+ *
+ * `maxKt` on virheraja — "tämä on selvästi väärin" — ei optimointitavoite.
+ * Mitattu 29.7.2026 kahdella oikealla alpha-lähteellä (1024×1024, olentokortit):
+ *   paakuva 1200/q80  → 230 kt ja 335 kt
+ *   thumb    512/q75  →  90 kt ja 112 kt
+ * Alkuperäiset rajat (300/120) hylkäsivät toisen näytteen heti, joten ne oli
+ * arvattu liian tiukoiksi: alpha-webp pakkautuu huonommin kuin opaakki, ja
+ * toimitussopimus lupaa vähintään 1200 px:n lähteitä eli näitä näytteitä
+ * suurempia tiedostoja. Rajoissa on siksi väljyyttä.
+ *
+ * Mittauksen sivulöydös, joka kannattaa muistaa: **pienentäminen kasvatti
+ * tiedostoa** (1024 → 1000 px nosti 230 → 273 kt ja 335 → 360 kt). Uudelleen-
+ * näytteistys pehmentää reunat, jotka pakkautuvat alphan kanssa huonommin kuin
+ * terävä alkuperäinen. Älä siis yritä säästää tavuja pienentämällä.
+ */
 export const JOHDANNAISET = [
-  { jalkiliite: '', sivu: 1200, laatu: 80, maxKt: 300 },
-  { jalkiliite: '-thumb', sivu: 512, laatu: 75, maxKt: 120 },
+  { jalkiliite: '', sivu: 1200, laatu: 80, maxKt: 500 },
+  { jalkiliite: '-thumb', sivu: 512, laatu: 75, maxKt: 150 },
 ];
 
 const LAHDEPAATTEET = ['.png', '.webp'];
