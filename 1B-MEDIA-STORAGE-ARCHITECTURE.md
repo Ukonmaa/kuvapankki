@@ -6,8 +6,8 @@
 
 | | |
 |---|---|
-| **Versio** | v0.2 (29.7.2026) |
-| **Status** | Kuvapankki tuotannossa · `entities/`-putki valmis, 0 kuvaa julkaistu (J6) · ääni/video-linjaus pohdintana |
+| **Versio** | v0.3 (3.8.2026) |
+| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) · ääni/video-linjaus pohdintana |
 | **Numerointi** | 1B = ytimen (1A-MYTHOLOGIA-FEINNE) rinnalla elävä läpileikkaava infrastruktuuri |
 | **Suhde muihin** | Tiivistää ja laajentaa: Atlas §5–5.2 (omistajuus, R2-polku, johdannaiset), Master §infrastruktuuri (v0.13), MF §3.9, `kuvapankki/README.md` |
 
@@ -112,6 +112,11 @@ arvoa) ja viittaa kanvaasiin avaimella — versiointi ei katoa, se elää avaint
 
 ### 2.5 `entities/` — nimiavaruus ja kuvatuotannon toimitussopimus (J6, 29.7.2026)
 
+> **PÄIVITETTY 3.8.2026 (v0.3): nimiavaruudessa on nyt neljä julkaistua kuvaa.**
+> Alla oleva 29.7. kirjattu tila (*"yhtään kuvaa ei ole julkaistu"*) on vanhentunut, ja
+> sen taustalla ollut linjaus *"tähän julkaisuun ei tule kuvia lainkaan"* raukesi, koska
+> **käyttäjä toimitti kuvat itse**. Ks. §2.5b.
+
 Nimiavaruus on **käytössä**: putki on rakennettu ja todennettu päästä päähän, mutta
 **yhtään kuvaa ei ole julkaistu** — kuvatuotanto tehdään erillisenä projektina, eikä
 tähän julkaisuun tule kuvia lainkaan (käyttäjän linjaus 29.7.2026).
@@ -169,11 +174,56 @@ toisen näytteen heti — alpha-webp pakkautuu huonommin kuin opaakki.
 reunat, jotka pakkautuvat alphan kanssa huonommin kuin terävä alkuperäinen. Älä siis
 yritä säästää tavuja pienentämällä.
 
-### 2.6 Nykytila lukuina (24.7.2026, entities-rivi 29.7.2026)
+### 2.5b Ensimmäinen oikea lasti — ja mikä EI kuulu tänne (3.8.2026, J8f/J8g)
 
-8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **putki valmis, 0 kuvaa**;
-`site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu ytimen julkaisun ja tulevan
-webin kanssa — nykyvolyymilla kaukana katosta.
+Putki sai ensimmäisen lastinsa: **neljä entiteettikuvaa**, kaikki käyttäjän toimittamia.
+
+| Avain | Entiteetti | paakuva | thumb |
+|---|---|---:|---:|
+| `entities/kultaraha/paakuva-v1.webp` | valuutta | 294 kt | 60 kt |
+| `entities/hopearaha/paakuva-v1.webp` | valuutta | 262 kt | 58 kt |
+| `entities/kupariraha/paakuva-v1.webp` | valuutta | 248 kt | 42 kt |
+| `entities/kaskenraja/paakuva-v1.webp` | paikka | 321 kt | 50 kt |
+
+Putki toimi päästä päähän ilman muutoksia: lähde `_lahde/<id>/paakuva.png` →
+`npm run entiteettikuvat` → versioitu avain → ytimen `kuvat`-kenttä → näkymän
+`kuvaUrl()`. Kaikki alle kokorajojen. **Kaista- ja bundlevaikutus:** näkymän
+julkaisuartefaktiin tulee **0 tavua** — kuvat haetaan URL:sta ajossa.
+
+**Poikkeus toimitussopimuksesta, joka kannattaa tietää:** yhdelläkään neljästä lähteestä
+**ei ole alfakanavaa** — kolikot ovat vaalealla pohjalla ja Kaskenraja on RGB-piirros
+paperilla. Sopimus lupaa läpinäkyvän taustan, mutta **kuvia ei muokattu**: näkymä
+sulauttaa taustan `mix-blend-mode: multiply` -tilalla pergamenttia vasten, jolloin
+valkoinen katoaa. **Korjaus tehtiin näkymässä, ei versioidussa avaimessa** — avain pysyy
+sinä mitä tekijä toimitti. Tämä on suositeltava järjestys aina kun taustan poisto on
+esitystapaa eikä kuvan sisältöä.
+
+#### Mikä EI kuulu `entities/`-nimiavaruuteen
+
+3.8.2026 harkittiin `Encyclopedia/Tietolaatikot/`-kansion 43 tiedoston viemistä tänne.
+**Ei viety, ja syy kannattaa muistaa:** ne eivät ole entiteettikuvia vaan **vanhan
+esitystavan tietolaatikoita — koristekehys, johon entiteetin lore-teksti on ladottu
+kuvaksi.** 42/43 esittää tekstin, jonka Ensyklopedia jo renderöi ytimestä elävänä.
+
+Kolme syytä, jotka pätevät yleisestikin:
+
+1. **Teksti kuvana on hakukelvotonta, ei-valittavaa ja saavuttamatonta.** Ydin on
+   tekstin koti; kuvapankki on tavujen koti. Tekstin kopioiminen tavuiksi rikkoo rajan.
+2. **Immutable-avain jäädyttää sisällön.** Kun teksti muuttuu ytimessä, kuva ei muutu —
+   ja koska avainta ei saa ylikirjoittaa, virhe jää näkyviin siihen asti kunnes joku
+   huomaa sen. Todiste oli jo käsillä: `Kaskenraja.jpg` kantaa Atlaksen **vanhaa**
+   varatekstiä, ei ytimen uudempaa laitosta.
+3. **Kuvapankki ei ole arkisto.** Vanhentuneen esitystavan säilyttäminen on
+   varmuuskopiointia, ei julkaisua — ks. ROADMAP **J25**.
+
+**Sääntö: `entities/` on entiteetin *kuvitusta* varten — sitä, mitä teksti ei voi
+korvata.** Jos tiedosto olisi yhtä hyvä tekstinä, se kuuluu ytimeen eikä tänne.
+
+### 2.6 Nykytila lukuina (24.7.2026; entities-rivi 3.8.2026)
+
+8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **4 entiteettiä,
+8 tiedostoa, ~1,3 Mt**; `site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu
+ytimen julkaisun ja tulevan webin kanssa — nykyvolyymilla kaukana katosta.
 
 ---
 
