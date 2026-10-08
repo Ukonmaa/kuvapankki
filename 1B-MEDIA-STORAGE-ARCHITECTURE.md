@@ -6,8 +6,8 @@
 
 | | |
 |---|---|
-| **Versio** | v0.3 (3.8.2026) |
-| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) · ääni/video-linjaus pohdintana |
+| **Versio** | v0.4 (9.10.2026) |
+| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) **+ 6 olentokuvaa valmiina, julkaisematta** (J26, §2.5c) · ääni/video-linjaus pohdintana |
 | **Numerointi** | 1B = ytimen (1A-MYTHOLOGIA-FEINNE) rinnalla elävä läpileikkaava infrastruktuuri |
 | **Suhde muihin** | Tiivistää ja laajentaa: Atlas §5–5.2 (omistajuus, R2-polku, johdannaiset), Master §infrastruktuuri (v0.13), MF §3.9, `kuvapankki/README.md` |
 
@@ -116,6 +116,11 @@ arvoa) ja viittaa kanvaasiin avaimella — versiointi ei katoa, se elää avaint
 > Alla oleva 29.7. kirjattu tila (*"yhtään kuvaa ei ole julkaistu"*) on vanhentunut, ja
 > sen taustalla ollut linjaus *"tähän julkaisuun ei tule kuvia lainkaan"* raukesi, koska
 > **käyttäjä toimitti kuvat itse**. Ks. §2.5b.
+>
+> **PÄIVITETTY 9.10.2026 (v0.4, J26): toimitussopimus muuttui kahdessa kohdassa.** (1) Lähde on
+> **taustallinen alkuperäinen**, ei alpha-kuva: kuvan pitää toimia millä tahansa taustalla.
+> (2) Luettelopaikoissa kuva sovitetaan `contain`-säännöllä ja kodeksisivulla `cover`-säännöllä
+> (alla "Sommittelu"-kohta ja §2.5c). Ks. §2.5c.
 
 Nimiavaruus on **käytössä**: putki on rakennettu ja todennettu päästä päähän, mutta
 **yhtään kuvaa ei ole julkaistu** — kuvatuotanto tehdään erillisenä projektina, eikä
@@ -133,7 +138,10 @@ ei kesken.
 
 #### Toimitussopimus — mitä kuvatuotanto toimittaa
 
-- **Yksi alpha-lähde per entiteetti:** PNG tai WebP, läpinäkyvä tausta, olento rajaamatta.
+- **Yksi lähde per entiteetti:** PNG tai WebP, olento rajaamatta. ~~Läpinäkyvä tausta~~ —
+  **muutettu 9.10.2026 (J26, käyttäjän linjaus): lähde on taustallinen alkuperäinen.** Alpha-kuvaa
+  ei toimiteta, koska läpinäkyvälle mustepiirrokselle kuvan tausta on kortin tumma pinta ja
+  piirros katoaa (mitattu Marrasilla). Alpha-lähde vain erillisellä päätöksellä (ROADMAP J49).
 - Resoluutio **vähintään 1200 px** pisimmältä sivulta, mieluiten enemmän — työkalu
   pienentää, ei suurenna.
 - Tiedostonimi `<rooli>.png`, missä rooli on toistaiseksi aina `paakuva`.
@@ -151,10 +159,11 @@ hoituvat työkalulla.
   muutu. Korjattu kuva on `paakuva-v2.webp` ja vaatii viitteen päivityksen ytimessä.
 - **Sommittelu:** kaikki nykyiset kuvapaikat rajaavat `object-fit: cover` -periaatteella
   **eri kuvasuhteilla** (Bestiaarin kortti 4:3, olentosivu 3:4, kodeksirivi 130×88 px,
-  Ensyklopedian muotokuva pystysuunnassa). Sommittele niin, että olennon tunnistettava osa
-  kestää sekä vaaka- että pystyrajauksen. **Avoin kohta:** alpha-taiteelle `contain` olisi
-  todennäköisesti oikeampi kuin `cover`, mutta sitä ei voi arvioida ilman oikeaa taidetta —
-  ratkaistaan kun ensimmäinen erä on nähtävissä.
+  Ensyklopedian muotokuva pystysuunnassa). ~~Sommittele niin, että olennon tunnistettava osa
+  kestää sekä vaaka- että pystyrajauksen.~~ **Ratkaistu 9.10.2026 (J26):** Bestiaari käyttää
+  luettelopaikoissa (kortti, luetteloriviä) `contain`ia ja kodeksisivulla `cover`ia, joten
+  kuvaajan ei tarvitse sommitella rajauksen ehdoilla. Monen kuvasuhteen tuki (mukautuva
+  kehys, vyöry tekstin alle) on tutkittu ja jonossa: ROADMAP **J49**.
 - **Alt-teksti** kirjoitetaan kuvan valmistuttua ja kuvaa **kuvaa**, ei entiteettiä.
 
 #### Mitat ja mittaustulokset
@@ -219,10 +228,53 @@ Kolme syytä, jotka pätevät yleisestikin:
 **Sääntö: `entities/` on entiteetin *kuvitusta* varten — sitä, mitä teksti ei voi
 korvata.** Jos tiedosto olisi yhtä hyvä tekstinä, se kuuluu ytimeen eikä tänne.
 
-### 2.6 Nykytila lukuina (24.7.2026; entities-rivi 3.8.2026)
+### 2.5c Ensimmäinen olentoerä (9.10.2026, J26)
 
-8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **4 entiteettiä,
-8 tiedostoa, ~1,3 Mt**; `site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu
+Kuusi olentokuvaa, kaikki käyttäjän lyijykynä- ja mustepiirroksia valkoisella tai
+paperinsävyisellä pohjalla. **Valmiina, julkaisematta** (kuvapankin push on tuotantodeploy,
+15 kr; ks. ROADMAP). Putki on sama kuin §2.5:ssä: `entities/_lahde/<id>/paakuva.png` →
+`npm run entiteettikuvat`; työkalua ei muutettu.
+
+| Avain | Lähde (Drive, vain luku) | Mitat → johdannainen | paakuva | thumb |
+|---|---|---|---:|---:|
+| `entities/ihtiriekko/paakuva-v1.webp` | Ihtiriekko.png | 600×800, ei suurennettu | 47 kt | 11 kt |
+| `entities/jattilainen/paakuva-v1.webp` | Jättiläinen.png (versio 1) | 1024×1024 | 127 kt | 27 kt |
+| `entities/kalmo/paakuva-v1.webp` | Kalmo.png (taustallinen) | 1024×1024 | 214 kt | 60 kt |
+| `entities/maahinen/paakuva-v1.webp` | Maahinen.png (versio 1) | 1024×1024 | 191 kt | 47 kt |
+| `entities/piru/paakuva-v1.webp` | Piru.png | 816×1456 → 673×1200 | 196 kt | 25 kt |
+| `entities/tontut/paakuva-v1.webp` | Tonttu.jpg | 1024×1024 | 181 kt | 39 kt |
+
+Yhteensä 1 165 kt, kaikki kokorajojen sisällä. Mestarit eivät muuttuneet.
+
+**Mitä erä opetti sopimukselle:**
+
+- **Taustallinen lähde, ei alpha** (käyttäjän linjaus 8.10.2026: *"kaikki taustattomat tulee
+  korvata taustallisella"*). Syy on mitattavissa: Marras on musta mustepiirros läpinäkyvällä
+  pohjalla (58 % + 25 % osittain läpinäkyvää), ja Bestiaryn tummalla kortilla se on lähes
+  näkymätön. Alpha-hahmo myös painaa eniten (Marras 484 kt / raja 500) — alpha-webp pakkautuu
+  huonommin kuin opaakki. **Läpinäkyvä tiedostonimi ei kerro läpinäkyvyyttä:** Marras.png on
+  alpha-kuva, vaikka sen nimessä ei lue "ei taustaa". Menninkäisen ainoa kuva on alpha, ja
+  se odottaa taustallista alkuperäistä (ROADMAP J49).
+- **Rinnakkaisversiot:** käyttäjä valitsi yhden per entiteetti. Valitsemattomat
+  (Jättiläinen2, Maahinen2, Tonttu2 ja kaikki "ei taustaa" -versiot) jäävät vain Driveen;
+  ne ovat eri piirroksia, ei kaksoiskappaleita. Skeema sallii toisen kuvan `lisakuva`na,
+  mutta yksikään näkymä ei vielä renderöi sitä.
+- **JPG-lähde:** työkalu ottaa vain `.png` ja `.webp`, joten `Tonttu.jpg` purettiin PNG:ksi
+  gitignoroituun `_lahde/`-puuhun (pikselit ennallaan; webp on siis toisen polven pakkaus).
+- **Resoluutio:** Ihtiriekko on 600×800 eli alle sopimuksen 1200 px:n; työkalu ei suurenna,
+  ja kuva riittää 3:4-kehykseen. Sopimuksen alaraja on tulevalle kuvatuotannolle edelleen
+  1200 px.
+- **Thumbit** (`-thumb-v1`) on tuotettu, mutta mikään näkymä ei käytä niitä: kortit hakevat
+  1200 px:n kuvan. Käyttöönotto kuuluu J49:ään.
+- **TARU vendoroi `kuvapankki/entities/` kokonaan** sekä Bestiaryn että Ensyklopedian mukaan
+  (`vendor-views.mjs`), joten erä lisää ~1,2 Mt kahteen kertaan TARU:n `public/views/`-
+  aineistoon seuraavassa TARU-julkaisussa.
+
+### 2.6 Nykytila lukuina (24.7.2026; entities-rivi 9.10.2026)
+
+8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **4 julkaistua entiteettiä
+(8 tiedostoa, ~1,3 Mt) + 6 julkaisematonta (12 tiedostoa, ~1,1 Mt)** eli julkaisun jälkeen
+10 entiteettiä, 20 tiedostoa, ~2,4 Mt; `site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu
 ytimen julkaisun ja tulevan webin kanssa — nykyvolyymilla kaukana katosta.
 
 ---
@@ -361,5 +413,7 @@ lore-hierarkian osalta ensisijainen on Master.
 
 | Versio | Pvm | Muutos |
 |---|---|---|
+| v0.4 | 9.10.2026 | **J26 — ensimmäinen olentoerä.** Uusi §2.5c: kuusi olentokuvaa (`entities/<id>/paakuva-v1.webp` + thumb, yht. 1 165 kt, kokorajojen sisällä) valmiina, julkaisematta. **Toimitussopimus muuttui:** lähde on taustallinen alkuperäinen eikä alpha (käyttäjän linjaus; mitattu: läpinäkyvä mustepiirros katoaa tummalla kortilla), ja sommittelurajoitus ("kestää vaaka- ja pystyrajauksen") poistui, koska luettelopaikat käyttävät `contain`ia ja kodeksisivu `cover`ia. §2.6 luvut päivitetty. Työkalua ei muutettu. |
+| v0.3 | 3.8.2026 | **J8f/J8g — ensimmäinen oikea lasti.** `entities/` sai neljä julkaistua kuvaa (kolme kolikkoa + Kaskenraja); uusi §2.5b (putken toiminta päästä päähän, poikkeus: ei alfakanavaa → tausta poistetaan näkymässä `multiply`-tilalla) ja luku "mikä EI kuulu `entities/`-nimiavaruuteen" (Tietolaatikot). *(Rivi lisätty jälkikäteen 9.10.; versio oli otsikossa mutta lokissa puuttui.)* |
 | v0.2 | 29.7.2026 | **J6 — entiteettikuvien putki.** `entities/`-nimiavaruus otettu käyttöön: uusi §2.5 (avainmalli, työkalu `luo-entiteettikuvat.mjs`, kuvatuotannon toimitussopimus, mitatut kokorajat 500/150 kt). §2.4 sai Bestiaarin ja Ensyklopedian kuluttajiksi ja perustelun kolmelle resolveritoisinnolle. Huom: **putki on valmis, kuvia ei ole julkaistu yhtään** — kuvatuotanto on erillinen projekti. |
 | v0.1 | 24.7.2026 | Ensimmäinen versio: kuvapankin nykytila dokumentoitu (varasto, avainmalli, johdannaiset, kuluttajat, luvut), mediavaraston invariantit eriytetty (§3), ääni/video-tulevaisuuslinjaus polkuineen A/B + striimausraja + päätössäännöt (§5). |
