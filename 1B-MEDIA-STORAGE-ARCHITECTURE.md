@@ -7,7 +7,7 @@
 | | |
 |---|---|
 | **Versio** | v0.4 (9.10.2026) |
-| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) **+ 6 olentokuvaa valmiina, julkaisematta** (J26, §2.5c) · ääni/video-linjaus pohdintana |
+| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) **+ 8 olentokuvaa valmiina, julkaisematta** (J26, §2.5c) · ääni/video-linjaus pohdintana |
 | **Numerointi** | 1B = ytimen (1A-MYTHOLOGIA-FEINNE) rinnalla elävä läpileikkaava infrastruktuuri |
 | **Suhde muihin** | Tiivistää ja laajentaa: Atlas §5–5.2 (omistajuus, R2-polku, johdannaiset), Master §infrastruktuuri (v0.13), MF §3.9, `kuvapankki/README.md` |
 
@@ -230,10 +230,12 @@ korvata.** Jos tiedosto olisi yhtä hyvä tekstinä, se kuuluu ytimeen eikä tä
 
 ### 2.5c Ensimmäinen olentoerä (9.10.2026, J26)
 
-Kuusi olentokuvaa, kaikki käyttäjän lyijykynä- ja mustepiirroksia valkoisella tai
-paperinsävyisellä pohjalla. **Valmiina, julkaisematta** (kuvapankin push on tuotantodeploy,
-15 kr; ks. ROADMAP). Putki on sama kuin §2.5:ssä: `entities/_lahde/<id>/paakuva.png` →
-`npm run entiteettikuvat`; työkalua ei muutettu.
+Kahdeksan olentokuvaa, kaikki käyttäjän lyijykynä- ja mustepiirroksia valkoisella tai
+paperinsävyisellä pohjalla (kuusi 8.10., Marras ja Menninkäinen 9.10. taustallisina
+alkuperäisinä). **Valmiina, julkaisematta** (kuvapankin push on tuotantodeploy, 15 kr; ks.
+ROADMAP). Putki on sama kuin §2.5:ssä: `entities/_lahde/<id>/paakuva.png` →
+`npm run entiteettikuvat`; työkalua ei muutettu. Työkalu ohitti jo olemassa olevat avaimet
+("oli jo"), kun lisäerä ajettiin — immutable-sääntö toimi kuten pitääkin.
 
 | Avain | Lähde (Drive, vain luku) | Mitat → johdannainen | paakuva | thumb |
 |---|---|---|---:|---:|
@@ -243,18 +245,24 @@ paperinsävyisellä pohjalla. **Valmiina, julkaisematta** (kuvapankin push on tu
 | `entities/maahinen/paakuva-v1.webp` | Maahinen.png (versio 1) | 1024×1024 | 191 kt | 47 kt |
 | `entities/piru/paakuva-v1.webp` | Piru.png | 816×1456 → 673×1200 | 196 kt | 25 kt |
 | `entities/tontut/paakuva-v1.webp` | Tonttu.jpg | 1024×1024 | 181 kt | 39 kt |
+| `entities/marras/paakuva-v1.webp` | Väliaikainen\Marras.jpg (taustallinen) | 1024×1536 → 800×1200 | 135 kt | 21 kt |
+| `entities/menninkainen/paakuva-v1.webp` | Väliaikainen\Menninkäinen.png (uusi piirros) | 1024×1024 | 166 kt | 42 kt |
 
-Yhteensä 1 165 kt, kaikki kokorajojen sisällä. Mestarit eivät muuttuneet.
+Yhteensä 1 529 kt, kaikki kokorajojen sisällä. Mestarit eivät muuttuneet. ⚠ **Kahden
+viimeisen mestarit ovat Driven `Väliaikainen`-kansiossa** eivätkä `Korttien kuvat/`-kansiossa
+muiden mukana — ne kannattaa siirtää J37:n hakemistorakenteen mukaan (ei tehty: Drive on
+vain luku tässä erässä).
 
 **Mitä erä opetti sopimukselle:**
 
 - **Taustallinen lähde, ei alpha** (käyttäjän linjaus 8.10.2026: *"kaikki taustattomat tulee
   korvata taustallisella"*). Syy on mitattavissa: Marras on musta mustepiirros läpinäkyvällä
   pohjalla (58 % + 25 % osittain läpinäkyvää), ja Bestiaryn tummalla kortilla se on lähes
-  näkymätön. Alpha-hahmo myös painaa eniten (Marras 484 kt / raja 500) — alpha-webp pakkautuu
-  huonommin kuin opaakki. **Läpinäkyvä tiedostonimi ei kerro läpinäkyvyyttä:** Marras.png on
-  alpha-kuva, vaikka sen nimessä ei lue "ei taustaa". Menninkäisen ainoa kuva on alpha, ja
-  se odottaa taustallista alkuperäistä (ROADMAP J49).
+  näkymätön. Alpha-hahmo myös painaa eniten (alpha-Marras 484 kt / raja 500; taustallinen
+  Marras 135 kt) — alpha-webp pakkautuu huonommin kuin opaakki. **Läpinäkyvä tiedostonimi ei
+  kerro läpinäkyvyyttä:** Marras.png oli alpha-kuva, vaikka sen nimessä ei lukenut "ei
+  taustaa". Molemmat alpha-kuvat korvattiin 9.10. taustallisilla alkuperäisillä, ja
+  läpinäkyviä -v1-avaimia ei julkaistu.
 - **Rinnakkaisversiot:** käyttäjä valitsi yhden per entiteetti. Valitsemattomat
   (Jättiläinen2, Maahinen2, Tonttu2 ja kaikki "ei taustaa" -versiot) jäävät vain Driveen;
   ne ovat eri piirroksia, ei kaksoiskappaleita. Skeema sallii toisen kuvan `lisakuva`na,
@@ -267,14 +275,14 @@ Yhteensä 1 165 kt, kaikki kokorajojen sisällä. Mestarit eivät muuttuneet.
 - **Thumbit** (`-thumb-v1`) on tuotettu, mutta mikään näkymä ei käytä niitä: kortit hakevat
   1200 px:n kuvan. Käyttöönotto kuuluu J49:ään.
 - **TARU vendoroi `kuvapankki/entities/` kokonaan** sekä Bestiaryn että Ensyklopedian mukaan
-  (`vendor-views.mjs`), joten erä lisää ~1,2 Mt kahteen kertaan TARU:n `public/views/`-
+  (`vendor-views.mjs`), joten erä lisää ~1,5 Mt kahteen kertaan TARU:n `public/views/`-
   aineistoon seuraavassa TARU-julkaisussa.
 
 ### 2.6 Nykytila lukuina (24.7.2026; entities-rivi 9.10.2026)
 
 8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **4 julkaistua entiteettiä
-(8 tiedostoa, ~1,3 Mt) + 6 julkaisematonta (12 tiedostoa, ~1,1 Mt)** eli julkaisun jälkeen
-10 entiteettiä, 20 tiedostoa, ~2,4 Mt; `site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu
+(8 tiedostoa, ~1,3 Mt) + 8 julkaisematonta (16 tiedostoa, ~1,5 Mt)** eli julkaisun jälkeen
+12 entiteettiä, 24 tiedostoa, ~2,8 Mt; `site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu
 ytimen julkaisun ja tulevan webin kanssa — nykyvolyymilla kaukana katosta.
 
 ---
@@ -413,7 +421,7 @@ lore-hierarkian osalta ensisijainen on Master.
 
 | Versio | Pvm | Muutos |
 |---|---|---|
-| v0.4 | 9.10.2026 | **J26 — ensimmäinen olentoerä.** Uusi §2.5c: kuusi olentokuvaa (`entities/<id>/paakuva-v1.webp` + thumb, yht. 1 165 kt, kokorajojen sisällä) valmiina, julkaisematta. **Toimitussopimus muuttui:** lähde on taustallinen alkuperäinen eikä alpha (käyttäjän linjaus; mitattu: läpinäkyvä mustepiirros katoaa tummalla kortilla), ja sommittelurajoitus ("kestää vaaka- ja pystyrajauksen") poistui, koska luettelopaikat käyttävät `contain`ia ja kodeksisivu `cover`ia. §2.6 luvut päivitetty. Työkalua ei muutettu. |
+| v0.4 | 9.10.2026 | **J26 — ensimmäinen olentoerä.** Uusi §2.5c: kahdeksan olentokuvaa (`entities/<id>/paakuva-v1.webp` + thumb, yht. 1 529 kt, kokorajojen sisällä) valmiina, julkaisematta; Marras ja Menninkäinen lisättiin 9.10. taustallisina alkuperäisinä. **Toimitussopimus muuttui:** lähde on taustallinen alkuperäinen eikä alpha (käyttäjän linjaus; mitattu: läpinäkyvä mustepiirros katoaa tummalla kortilla), ja sommittelurajoitus ("kestää vaaka- ja pystyrajauksen") poistui, koska luettelopaikat käyttävät `contain`ia ja kodeksisivu `cover`ia. §2.6 luvut päivitetty. Työkalua ei muutettu. |
 | v0.3 | 3.8.2026 | **J8f/J8g — ensimmäinen oikea lasti.** `entities/` sai neljä julkaistua kuvaa (kolme kolikkoa + Kaskenraja); uusi §2.5b (putken toiminta päästä päähän, poikkeus: ei alfakanavaa → tausta poistetaan näkymässä `multiply`-tilalla) ja luku "mikä EI kuulu `entities/`-nimiavaruuteen" (Tietolaatikot). *(Rivi lisätty jälkikäteen 9.10.; versio oli otsikossa mutta lokissa puuttui.)* |
 | v0.2 | 29.7.2026 | **J6 — entiteettikuvien putki.** `entities/`-nimiavaruus otettu käyttöön: uusi §2.5 (avainmalli, työkalu `luo-entiteettikuvat.mjs`, kuvatuotannon toimitussopimus, mitatut kokorajat 500/150 kt). §2.4 sai Bestiaarin ja Ensyklopedian kuluttajiksi ja perustelun kolmelle resolveritoisinnolle. Huom: **putki on valmis, kuvia ei ole julkaistu yhtään** — kuvatuotanto on erillinen projekti. |
 | v0.1 | 24.7.2026 | Ensimmäinen versio: kuvapankin nykytila dokumentoitu (varasto, avainmalli, johdannaiset, kuluttajat, luvut), mediavaraston invariantit eriytetty (§3), ääni/video-tulevaisuuslinjaus polkuineen A/B + striimausraja + päätössäännöt (§5). |
