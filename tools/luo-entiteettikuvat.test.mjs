@@ -5,7 +5,7 @@ import { mkdtempSync, rmSync, existsSync, mkdirSync, statSync, writeFileSync } f
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import sharp from 'sharp';
-import { luoEntiteettikuvat } from './luo-entiteettikuvat.mjs';
+import { luoEntiteettikuvat, mittaaEntiteettikuvat } from './luo-entiteettikuvat.mjs';
 
 // Windows: libvips pitää luetun tiedoston kahvan auki välimuistissaan, jolloin
 // väliaikaishakemiston siivous kaatuu EPERM-virheeseen. Välimuisti pois → kahva
@@ -138,6 +138,33 @@ test('tuntematon pääte raportoidaan eikä vaieta', async () => {
     assert.equal(tulos.luotu.length, 0);
     assert.equal(tulos.viat.length, 1, 'käyttökelpoisen lähteen puuttuminen on raportoitava');
     assert.match(tulos.viat[0], /psd-olento/, 'vikailmoitus ei nimeä kansiota');
+  } finally {
+    rmSync(juuri, { recursive: true, force: true });
+  }
+});
+
+test('mittaaEntiteettikuvat palauttaa paakuvien mitat ja ohittaa thumbit', async () => {
+  const { juuri, lahdeJuuri, kohdeJuuri, id } = await pystyta();
+  try {
+    await luoEntiteettikuvat({ lahdeJuuri, kohdeJuuri });
+    const mitat = await mittaaEntiteettikuvat(kohdeJuuri);
+    assert.equal(mitat.length, 1, 'vain paakuva, ei thumbia');
+    assert.deepEqual(mitat[0], { avain: `entities/${id}/paakuva-v1.webp`, leveys: 64, korkeus: 64 });
+  } finally {
+    rmSync(juuri, { recursive: true, force: true });
+  }
+});
+
+test('mittaaEntiteettikuvat ohittaa _lahde-kansion ja puuttuvan juuren', async () => {
+  const { juuri, lahdeJuuri, kohdeJuuri } = await pystyta('toinen');
+  try {
+    assert.deepEqual(await mittaaEntiteettikuvat(join(juuri, 'ei-ole')), []);
+    // _lahde on kohteen sisällä vain, jos käyttäjä ajaa työkalun entities/-juureen: simuloi se.
+    mkdirSync(join(kohdeJuuri, '_lahde', 'x'), { recursive: true });
+    await luoLahdekuva(join(kohdeJuuri, '_lahde', 'x', 'paakuva-v1.webp'));
+    await luoEntiteettikuvat({ lahdeJuuri, kohdeJuuri });
+    const avaimet = (await mittaaEntiteettikuvat(kohdeJuuri)).map((m) => m.avain);
+    assert.deepEqual(avaimet, ['entities/toinen/paakuva-v1.webp']);
   } finally {
     rmSync(juuri, { recursive: true, force: true });
   }

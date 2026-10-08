@@ -117,9 +117,47 @@ export async function luoEntiteettikuvat({ lahdeJuuri, kohdeJuuri, versio = 1, j
   return { luotu, ohitettu, ylitykset, viat };
 }
 
+/**
+ * Mittaa kohdekansion versioidut PÄÄKUVAT (ei thumbeja) ja palauttaa ytimen `kuvat[]`-alkioon
+ * kuuluvat mitat: [{ avain, leveys, korkeus }]. Avain on kuvapankin avain
+ * (`entities/<id>/<rooli>-v<n>.webp`) eli sama muoto kuin ytimen `kuvat[].tiedosto`.
+ *
+ * Mitat ovat julkaistun johdannaisen (enintään 1200 px) pikselimitat — ne, joita näkymä
+ * oikeasti näyttää. Näkymä käyttää niitä kuva-alan suhteen asettamiseen jo piirtäessä, jotta
+ * sivu ei hyppää kuvan latautuessa (J49). Thumb on samassa suhteessa, joten sille ei kirjata
+ * omia mittoja.
+ *
+ * @param {string} kohdeJuuri  kansio, jonka alla <id>/<rooli>-v<n>.webp
+ * @returns {Promise<{avain:string, leveys:number, korkeus:number}[]>}
+ */
+export async function mittaaEntiteettikuvat(kohdeJuuri) {
+  const tulos = [];
+  if (!existsSync(kohdeJuuri)) return tulos;
+  for (const id of (await readdir(kohdeJuuri)).sort()) {
+    if (id.startsWith('_')) continue;
+    const kansio = join(kohdeJuuri, id);
+    if (!(await stat(kansio)).isDirectory()) continue;
+    for (const tiedosto of (await readdir(kansio)).sort()) {
+      if (!/^[a-z0-9]+(-[a-z0-9]+)*-v\d+\.webp$/.test(tiedosto)) continue;
+      if (/-thumb-v\d+\.webp$/.test(tiedosto)) continue;
+      const { width, height } = await sharp(join(kansio, tiedosto)).metadata();
+      tulos.push({ avain: `entities/${id}/${tiedosto}`, leveys: width, korkeus: height });
+    }
+  }
+  return tulos;
+}
+
 // CLI-kuori: ajetaan vain suoraan, ei tuotaessa testistä.
+//   npm run entiteettikuvat           johdannaiset lähteistä + mitat uusille pääkuville
+//   npm run entiteettikuvat -- --mitat   vain mitat KAIKILLE pääkuville (JSON-rivit)
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const entities = fileURLToPath(new URL('../entities/', import.meta.url));
+  if (process.argv.includes('--mitat')) {
+    for (const m of await mittaaEntiteettikuvat(entities)) {
+      console.log(JSON.stringify({ tiedosto: m.avain, leveys: m.leveys, korkeus: m.korkeus }));
+    }
+    process.exit(0);
+  }
   const { luotu, ohitettu, ylitykset, viat } = await luoEntiteettikuvat({
     lahdeJuuri: join(entities, '_lahde'),
     kohdeJuuri: entities,
@@ -128,6 +166,12 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   for (const a of ohitettu) console.log(`  = entities/${a} (oli jo)`);
   for (const v of ylitykset) console.error(`  ! entities/${v}`);
   for (const v of viat) console.error(`  ! entities/${v}`);
+  const uudet = new Set(luotu.map((a) => `entities/${a}`));
+  const mitat = (await mittaaEntiteettikuvat(entities)).filter((m) => uudet.has(m.avain));
+  if (mitat.length) {
+    console.log('Mitat ytimen kuvat[]-alkioon (leveys, korkeus):');
+    for (const m of mitat) console.log(`  ${m.avain}  leveys ${m.leveys}  korkeus ${m.korkeus}`);
+  }
   console.log(`Valmis: ${luotu.length} luotu, ${ohitettu.length} ohitettu.`);
   process.exit(ylitykset.length || viat.length ? 1 : 0);
 }
