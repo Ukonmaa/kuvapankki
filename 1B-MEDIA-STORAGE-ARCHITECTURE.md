@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Versio** | v0.4 (9.10.2026) |
+| **Versio** | v0.5 (9.10.2026) |
 | **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) **+ 8 olentokuvaa valmiina, julkaisematta** (J26, §2.5c) · ääni/video-linjaus pohdintana |
 | **Numerointi** | 1B = ytimen (1A-MYTHOLOGIA-FEINNE) rinnalla elävä läpileikkaava infrastruktuuri |
 | **Suhde muihin** | Tiivistää ja laajentaa: Atlas §5–5.2 (omistajuus, R2-polku, johdannaiset), Master §infrastruktuuri (v0.13), MF §3.9, `kuvapankki/README.md` |
@@ -272,8 +272,12 @@ vain luku tässä erässä).
 - **Resoluutio:** Ihtiriekko on 600×800 eli alle sopimuksen 1200 px:n; työkalu ei suurenna,
   ja kuva riittää 3:4-kehykseen. Sopimuksen alaraja on tulevalle kuvatuotannolle edelleen
   1200 px.
-- **Thumbit** (`-thumb-v1`) on tuotettu, mutta mikään näkymä ei käytä niitä: kortit hakevat
-  1200 px:n kuvan. Käyttöönotto kuuluu J49:ään.
+- **Thumbit** (`-thumb-v1`) ovat käytössä Bestiaryn kortissa (J49, 9.10.): `srcset` pikkukuva 1x, täysi
+  kuva 2x — tavallisella näytöllä 8 kuvaa 1 257 kt → 272 kt. Pikkukuvan avain johdetaan pääkuvan
+  avaimesta (`-vN.webp` → `-thumb-vN.webp`), joten datassa on vain pääkuvan avain.
+- **Mitat:** työkalu mittaa pääkuvat (`npm run entiteettikuvat -- --mitat` → JSON-rivit; normaaliajo
+  tulostaa uusien mitat), ja ne kirjataan ytimen `kuvat[].leveys/korkeus`-kenttiin (1A §3.9), jotta
+  näkymä asettaa kuva-alan suhteen ennen latausta.
 - **TARU vendoroi `kuvapankki/entities/` kokonaan** sekä Bestiaryn että Ensyklopedian mukaan
   (`vendor-views.mjs`), joten erä lisää ~1,5 Mt kahteen kertaan TARU:n `public/views/`-
   aineistoon seuraavassa TARU-julkaisussa.
@@ -421,6 +425,7 @@ lore-hierarkian osalta ensisijainen on Master.
 
 | Versio | Pvm | Muutos |
 |---|---|---|
+| v0.5 | 9.10.2026 | **J49 — mitat ja pikkukuva.** `tools/luo-entiteettikuvat.mjs` sai `mittaaEntiteettikuvat()`-funktion ja CLI-valitsimen `--mitat` (pääkuvien mitat ytimen `kuvat[]`-kenttiin); normaaliajo tulostaa uusien kuvien mitat. Testit 9/9 (+2). §2.5c: thumbit otettu käyttöön Bestiaryn kortissa (`srcset`). Tiedostoja ei lisätty. |
 | v0.4 | 9.10.2026 | **J26 — ensimmäinen olentoerä.** Uusi §2.5c: kahdeksan olentokuvaa (`entities/<id>/paakuva-v1.webp` + thumb, yht. 1 529 kt, kokorajojen sisällä) valmiina, julkaisematta; Marras ja Menninkäinen lisättiin 9.10. taustallisina alkuperäisinä. **Toimitussopimus muuttui:** lähde on taustallinen alkuperäinen eikä alpha (käyttäjän linjaus; mitattu: läpinäkyvä mustepiirros katoaa tummalla kortilla), ja sommittelurajoitus ("kestää vaaka- ja pystyrajauksen") poistui, koska luettelopaikat käyttävät `contain`ia ja kodeksisivu `cover`ia. §2.6 luvut päivitetty. Työkalua ei muutettu. |
 | v0.3 | 3.8.2026 | **J8f/J8g — ensimmäinen oikea lasti.** `entities/` sai neljä julkaistua kuvaa (kolme kolikkoa + Kaskenraja); uusi §2.5b (putken toiminta päästä päähän, poikkeus: ei alfakanavaa → tausta poistetaan näkymässä `multiply`-tilalla) ja luku "mikä EI kuulu `entities/`-nimiavaruuteen" (Tietolaatikot). *(Rivi lisätty jälkikäteen 9.10.; versio oli otsikossa mutta lokissa puuttui.)* |
 | v0.2 | 29.7.2026 | **J6 — entiteettikuvien putki.** `entities/`-nimiavaruus otettu käyttöön: uusi §2.5 (avainmalli, työkalu `luo-entiteettikuvat.mjs`, kuvatuotannon toimitussopimus, mitatut kokorajat 500/150 kt). §2.4 sai Bestiaarin ja Ensyklopedian kuluttajiksi ja perustelun kolmelle resolveritoisinnolle. Huom: **putki on valmis, kuvia ei ole julkaistu yhtään** — kuvatuotanto on erillinen projekti. |
