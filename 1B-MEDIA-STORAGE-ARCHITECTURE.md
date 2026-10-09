@@ -7,7 +7,7 @@
 | | |
 |---|---|
 | **Versio** | v0.5 (9.10.2026) |
-| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) **+ 8 olentokuvaa valmiina, julkaisematta** (J26, §2.5c) · ääni/video-linjaus pohdintana |
+| **Status** | Kuvapankki tuotannossa · `entities/` **käytössä: 4 entiteettikuvaa julkaistu** (J8f, J8g) **+ 8 olentokuvaa julkaistu 9.10.2026** (J26, §2.5c) · ääni/video-linjaus pohdintana |
 | **Numerointi** | 1B = ytimen (1A-MYTHOLOGIA-FEINNE) rinnalla elävä läpileikkaava infrastruktuuri |
 | **Suhde muihin** | Tiivistää ja laajentaa: Atlas §5–5.2 (omistajuus, R2-polku, johdannaiset), Master §infrastruktuuri (v0.13), MF §3.9, `kuvapankki/README.md` |
 
@@ -232,8 +232,8 @@ korvata.** Jos tiedosto olisi yhtä hyvä tekstinä, se kuuluu ytimeen eikä tä
 
 Kahdeksan olentokuvaa, kaikki käyttäjän lyijykynä- ja mustepiirroksia valkoisella tai
 paperinsävyisellä pohjalla (kuusi 8.10., Marras ja Menninkäinen 9.10. taustallisina
-alkuperäisinä). **Valmiina, julkaisematta** (kuvapankin push on tuotantodeploy, 15 kr; ks.
-ROADMAP). Putki on sama kuin §2.5:ssä: `entities/_lahde/<id>/paakuva.png` →
+alkuperäisinä). **Julkaistu 9.10.2026** (kuvapankin push, 15 kr; 16/16 uutta tiedostoa todennettu
+livestä: 200, `immutable`, CORS `*`). Putki on sama kuin §2.5:ssä: `entities/_lahde/<id>/paakuva.png` →
 `npm run entiteettikuvat`; työkalua ei muutettu. Työkalu ohitti jo olemassa olevat avaimet
 ("oli jo"), kun lisäerä ajettiin — immutable-sääntö toimi kuten pitääkin.
 
@@ -285,7 +285,7 @@ vain luku tässä erässä).
 ### 2.6 Nykytila lukuina (24.7.2026; entities-rivi 9.10.2026)
 
 8 karttaa, 25 webp-tiedostoa, **~44 Mt** (`maps/`); `entities/` **4 julkaistua entiteettiä
-(8 tiedostoa, ~1,3 Mt) + 8 julkaisematonta (16 tiedostoa, ~1,5 Mt)** eli julkaisun jälkeen
+(8 tiedostoa, ~1,3 Mt) + 8 9.10. julkaistua (16 tiedostoa, ~1,5 Mt)** eli yhteensä
 12 entiteettiä, 24 tiedostoa, ~2,8 Mt; `site/` tyhjä varaus. Netlifyn ilmaiskaista 100 Gt/kk on jaettu
 ytimen julkaisun ja tulevan webin kanssa — nykyvolyymilla kaukana katosta.
 
